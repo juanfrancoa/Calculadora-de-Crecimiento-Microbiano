@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crecimiento Microbiano</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background: #218838;
+        }
+        .error {
+            color: red;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Calculadora de Crecimiento Microbiano</h2>
+        <form method="post">
+            <label for="Ni">Población inicial (Ni):</label>
+            <input type="number" name="Ni" step="any"><br>
+            
+            <label for="Nt">Población final (Nt):</label>
+            <input type="number" name="Nt" step="any"><br>
+            
+            <label for="T">Tiempo de incubación (T) en minutos:</label>
+            <input type="number" name="T" step="any"><br>
+            
+            <label for="micro">Seleccionar microorganismo:</label>
+            <select name="micro">
+                <option value="">-- Seleccione --</option>
+                {% for micro, tg in microorganismos.items() %}
+                <option value="{{ micro }}" {% if seleccionado == micro %}selected{% endif %}>{{ micro }} (tg={{ tg }} min)</option>
+                {% endfor %}
+            </select><br>
+            
+            <label for="tg">Tiempo de generación (tg) en minutos (opcional si se selecciona un microorganismo):</label>
+            <input type="number" name="tg" step="any"><br>
+            
+            <input type="submit" value="Calcular">
+        </form>
+        
+        {% if mensaje_error %}
+        <p class="error">{{ mensaje_error }}</p>
+        {% endif %}
+        
+        {% if Ni is not none or Nt is not none or n is not none or tg is not none %}
+        <div class="results">
+            <h3>Resultados:</h3>
+            <ul>
+                {% if Ni is not none %}<li>Ni (Población inicial): {{ Ni }}</li>{% endif %}
+                {% if Nt is not none %}<li>Nt (Población final): {{ Nt }}</li>{% endif %}
+                {% if n is not none %}<li>n (Número de generaciones): {{ n }}</li>{% endif %}
+                {% if tg is not none %}<li>tg (Tiempo de generación): {{ tg }} minutos</li>{% endif %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
